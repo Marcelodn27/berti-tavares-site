@@ -1,0 +1,98 @@
+@import "tailwindcss";
+@config "../tailwind.config.ts";
+
+:root {
+  --background: #ffffff;
+  --foreground: #2b1116;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-work-sans), Arial, Helvetica, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+.moving-tag {
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  overflow: hidden;
+  border-radius: 9999px;
+  padding: 0.42rem 0.78rem;
+  background: rgb(255 248 232 / 0.08);
+  color: rgb(255 248 232 / 0.92);
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.moving-tag::before {
+  position: absolute;
+  z-index: 0;
+  top: -42%;
+  left: -42%;
+  width: 185%;
+  aspect-ratio: 1;
+  content: "";
+  pointer-events: none;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0 43%,
+    rgb(255 235 171 / 0.68) 48%,
+    rgb(255 235 171 / 0.12) 54%,
+    transparent 59% 100%
+  );
+  animation: tag-orbit 3.8s linear infinite;
+}
+
+.moving-tag > span {
+  position: relative;
+  z-index: 1;
+  padding: 0;
+}
+
+@keyframes tag-orbit {
+  to { transform: rotate(1turn); }
+}
+
+/* Text Wave, adaptado do componente gratuito Text Wave do Originkit.
+   Mantido quase imperceptível para não competir com a leitura. */
+.text-wave-backdrop {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: center;
+  gap: 0.1em 0.28em;
+  overflow: hidden;
+  padding: 1rem;
+  color: rgb(211 166 85 / 0.055);
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: clamp(3rem, 9vw, 8rem);
+  font-weight: 700;
+  letter-spacing: -0.06em;
+  line-height: 0.82;
+  user-select: none;
+}
+
+.text-wave-backdrop span {
+  animation: text-wave-shimmer 7s ease-in-out infinite alternate;
+}
+
+.text-wave-backdrop span:nth-child(2n) { animation-delay: -2s; }
+.text-wave-backdrop span:nth-child(3n) { animation-delay: -4s; }
+
+@keyframes text-wave-shimmer {
+  from { opacity: 0.25; transform: translateY(0); }
+  to { opacity: 1; transform: translateY(-0.08em); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .text-wave-backdrop span { animation: none; }
+  .moving-tag::before { animation: none; }
+}
